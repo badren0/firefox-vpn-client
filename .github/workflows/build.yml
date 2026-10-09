@@ -1,0 +1,30 @@
+
+name: Build Windows executable
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Download source
+        uses: actions/checkout@v4
+
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Compile executable
+        run: go build -o firefox-vpn-client.exe ./cmd/proxy-demo
+
+      - name: Upload executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-vpn-client-windows
+          path: firefox-vpn-client.exe
